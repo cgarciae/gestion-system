@@ -1,0 +1,33 @@
+name: GestionSystem
+version: 0.0.1
+description: A minimal web app for the developer that doesn’t want to be confused by too much going on.
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dependencies:
+  angular: any
+  browser: any
+  googleapis: any
+  googleapis_auth: any
+  mock: any
+  redstone: any
+  redstone_mapper: any
+  redstone_mapper_mongo: any
+  route_hierarchical: '>=0.5.0 <0.7.0'
+  sass: '>=0.4.0 <0.5.0'
+  script_inliner: '>=1.0.0 <2.0.0'
+  shelf: any
+  shelf_static: any
+  unittest: any
+transformers:
+- script_inliner
+- redstone_mapper
+- angular:
+    html_files:
+    - lib/components/views/sitio/sitio.html
+    - lib/components/views/sitio/sitio2.html
+    - lib/components/login/login.html
+- $dart2js:
+    $exclude:
+    - bin
+    - '*test*'
+    minify: true
