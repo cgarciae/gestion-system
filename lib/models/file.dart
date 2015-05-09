@@ -3,7 +3,6 @@ part of aristadart.general;
 class FileDb extends Ref
 {
     @Field() String get href => id != null ? localHost + 'file/$id' : null;
-    
     @Field() String system;
     @Field() String filename;
     @Field() String type;
