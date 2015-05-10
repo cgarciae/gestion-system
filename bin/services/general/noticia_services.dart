@@ -1,10 +1,10 @@
 part of aristadart.server;
 
-@app.Group('/${Col.noticia}')
+@app.Group('/${Col.noticias}')
 @Encode()
 class NoticiaServices extends AristaService<Noticia>
 {
-    NoticiaServices (MongoService mongoDb) : super (Col.noticia, mongoDb);
+    NoticiaServices (MongoService mongoDb) : super (Col.noticias, mongoDb);
     
     @app.DefaultRoute (methods: const [app.POST])
     @Private(ADMIN)

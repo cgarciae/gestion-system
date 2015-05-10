@@ -2,7 +2,7 @@ part of aristadart.tests;
 
 userServicesTests ()
 {
-    MongoDbManager dbManager = new MongoDbManager("mongodb://${partialDBHost}/servicesTesting");
+    MongoDbManager dbManager = new MongoDbManager("mongodb://${dbHost}/servicesTesting");
     group("User Tests", ()
     {
         //Definir usuario
@@ -18,7 +18,7 @@ userServicesTests ()
             //Insertar usuario
             MongoDb db = await dbManager.getConnection();
             basicUser.id = newId();
-            await db.insert (Col.user, basicUser);
+            await db.insert (Col.usuarios, basicUser);
             dbManager.closeConnection (db);
         }
         
@@ -221,7 +221,7 @@ userServicesTests ()
             ProtectedUser protectedUser = Cast (ProtectedUser, basicUser);
             protectedUser.admin = false;
             MongoDb db = await dbManager.getConnection();
-            await db.insert (Col.user, protectedUser);
+            await db.insert (Col.usuarios, protectedUser);
             dbManager.closeConnection (db);
             
             //SETUP

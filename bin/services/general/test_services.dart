@@ -8,6 +8,8 @@ cookie ()
     return new shelf.Response.ok (cookie, headers: {'set-cookie':'ID=2; Path=/; HttpOnly'});
 }
 
+@app.Route ('/testPATCH', methods: const['PATCH',app.POST])
+testPatch () => "OK";
 
 class PrintHeaders
 {

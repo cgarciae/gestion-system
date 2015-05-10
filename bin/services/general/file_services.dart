@@ -4,7 +4,7 @@ part of aristadart.server;
 @Catch()
 class FileServices extends AristaService<FileDb>
 {
-    FileServices (MongoService mongoService) : super (Col.file, mongoService);
+    FileServices (MongoService mongoService) : super (Col.files, mongoService);
     
     GridFS get fs => new GridFS(mongoDb.innerConn);
     
@@ -15,7 +15,7 @@ class FileServices extends AristaService<FileDb>
                                 @Decode(fromQueryParams: true) FileDb queryMetadata,
                                 {String id, String ownerId}) async
     {
-        HttpBodyFileUpload file = FormToFileUpload(form);
+        HttpBodyFileUpload file = extractFile(form);
             
         if (file == null || file.content == null || file.content.length == 0)
             throw new app.ErrorResponse (400, "File is null or empty");

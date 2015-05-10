@@ -4,7 +4,7 @@ homeServicesTests ()
 {
     group("Home Services Tests:", ()
     {
-        MongoDbManager dbManager = new MongoDbManager("mongodb://${partialDBHost}/servicesTesting");
+        MongoDbManager dbManager = new MongoDbManager("mongodb://${dbHost}/servicesTesting");
         MongoDb db;
         
         setUp(() async

@@ -4,7 +4,7 @@ noticiaServicesTests ()
 {
     group("Noticia Services Tests:", ()
     {
-        MongoDbManager dbManager = new MongoDbManager("mongodb://${partialDBHost}/servicesTesting");
+        MongoDbManager dbManager = new MongoDbManager("mongodb://${dbHost}/servicesTesting");
         MongoDb db;
         MongoService mongoService;
         NoticiaServices noticiaServices;

@@ -7,7 +7,7 @@ class UserServives extends AristaService<User>
 {
   GoogleServices googleServices;
   
-    UserServives (MongoService mongoService, this.googleServices) : super (Col.user, mongoService);
+    UserServives (MongoService mongoService, this.googleServices) : super (Col.users, mongoService);
     
     @app.Route ('/googleLogin', methods: const [app.POST])
     Future<User> GoogleLogin (@Decode() JsonAccessCredentials credentials) async
@@ -78,7 +78,7 @@ class UserServives extends AristaService<User>
     {
         ProtectedUser user = await mongoDb.findOne
         (
-            Col.user,
+            Col.users,
             ProtectedUser,
             where.id(StringToId(userId))
         );

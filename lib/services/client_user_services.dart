@@ -3,7 +3,7 @@ part of aristadart.client;
 @Injectable()
 class ClientUserServices extends ClientService<User>
 {
-    ClientUserServices (Requester requester) : super (Col.user, requester);
+    ClientUserServices (Requester requester) : super (Col.usuarios, requester);
     
     //@app.Route ('/googleLogin', methods: const [app.POST])
     Future<User> GoogleLogin (JsonAccessCredentials credentials) async

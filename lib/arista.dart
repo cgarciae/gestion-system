@@ -50,15 +50,27 @@ String get partialHost {
 
 String get localHost => "http://${partialHost}/";
 
-String get partialDBHost {
+String get dbHost {
     switch (tipoBuild)
     {
         case TipoBuild.desarrollo:
         case TipoBuild.jsTesting:
-            return "192.168.59.103:8095";
+            return "104.131.109.228";
         case TipoBuild.dockerTesting:
         case TipoBuild.deploy:
             return "db";
+    }
+}
+
+int get dbPort {
+    switch (tipoBuild)
+    {
+        case TipoBuild.desarrollo:
+        case TipoBuild.jsTesting:
+            return 7272;
+        case TipoBuild.dockerTesting:
+        case TipoBuild.deploy:
+            return 28015;
     }
 }
 
@@ -113,16 +125,11 @@ abstract class Method
 
 abstract class Col
 {
-    static const String user = 'user';
-    static const String evento = 'evento';
-    static const String vista = 'vista';
-    static const String cloudTarget = 'cloudTarget';
-    static const String objetoUnity = 'objetoUnity';
-    static const String localTarget = 'localTarget';
-    static const String file = "file";
-    static const String noticia = "noticia";
+    static const String usuarios = 'usuarios';
+    static const String files = "files";
+    static const String noticias = "noticia";
     static const String home = "home";
-    static const String sitio = "sitio";
+    static const String sitios = "sitio";
 }
 
 abstract class ErrCode

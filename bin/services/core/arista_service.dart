@@ -1,7 +1,7 @@
 part of aristadart.server;
 
 
-class AristaService<T extends Ref> extends MongoDbService<T>
+class AristaService<T extends Ref> extends RethinkServices<T>
 {
     AristaService (String collectionName, MongoService mongoService) : super.fromConnection(mongoService, collectionName);
     

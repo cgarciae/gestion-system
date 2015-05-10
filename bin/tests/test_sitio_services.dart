@@ -2,7 +2,7 @@ part of aristadart.tests;
 
 sitioServicesTests ()
 {
-    MongoDbManager dbManager = new MongoDbManager("mongodb://${partialDBHost}/servicesTesting");
+    MongoDbManager dbManager = new MongoDbManager("mongodb://${dbHost}/servicesTesting");
     MongoDb db;
     MongoService mongoService;
     SitioServices sitioServices;
@@ -18,7 +18,7 @@ sitioServicesTests ()
         //remove all loaded handlers
         tearDown(() async
         {
-            await db.innerConn.collection(Col.sitio).drop();
+            await db.innerConn.collection(Col.sitios).drop();
             dbManager.closeConnection (db);
         });
         

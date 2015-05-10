@@ -3,7 +3,7 @@ part of aristadart.client;
 
 class ClientNoticiaServices extends ClientService<Noticia>
 {
-    ClientNoticiaServices (Requester requester) : super (Col.noticia, requester);
+    ClientNoticiaServices (Requester requester) : super (Col.noticias, requester);
     
     //private
     Future<Noticia> New () async

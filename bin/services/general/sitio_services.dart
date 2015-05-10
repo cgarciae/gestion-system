@@ -1,11 +1,11 @@
 part of aristadart.server;
 
-@app.Group('/${Col.sitio}')
+@app.Group('/${Col.sitios}')
 @Catch()
 @Encode()
 class SitioServices extends AristaService<Sitio>
 {
-    SitioServices (MongoService mongoDb) : super (Col.sitio, mongoDb);
+    SitioServices (MongoService mongoDb) : super (Col.sitios, mongoDb);
     
     @app.DefaultRoute (methods: const [app.POST])
     @Private(ADMIN)
