@@ -7,10 +7,7 @@ class RestFileServices extends FileServices2 {
 
   @app.DefaultRoute (methods: const[app.POST], allowMultipartRequest: true)
   @Encode()
-  Future<FileDb> newFile(@app.Body(app.FORM) QueryMap form, @Decode(fromQueryParams: true) FileDb metadata)
-    => upload(form, metadata);
-
-
+  Future<FileDb> newFile(@app.Body(app.FORM) QueryMap form, @Decode(fromQueryParams: true) FileDb metadata) async {
+    getT
+  }
 }
-
-@app.Route ()
