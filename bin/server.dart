@@ -41,6 +41,12 @@ part 'services/mvc/mvc_files_services.dart';
 
 main() async {
 
+  var l = [1,2,3,4];
+
+  l.forEach((n) => n = n + 3);
+
+  print (l);
+
   var config = new ConfigRethink(
     host: dbHost,
     port: 7272,

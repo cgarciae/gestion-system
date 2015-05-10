@@ -5,18 +5,13 @@ class FileServices2 extends RethinkServices<FileDb> {
 
   FileServices2(InjectableRethinkConnection irc) : super.fromInjectableConnection (Col.files, irc);
 
-  Future<FileDb> upload (Map form, FileDb metadata,
-      {String id, String ownerId}) async {
+  Future<FileDb> upload (Map form, FileDb metadata) async {
     HttpBodyFileUpload fileUpload = extractFile(form);
 
     if (fileUpload == null ||
         fileUpload.content == null ||
         fileUpload.content.length == 0) throw new app.ErrorResponse(
             400, {'error': "file is null or empty"});
-
-    if (id != null) metadata.id = id;
-
-    if (ownerId != null) metadata.owner = new User()..id = ownerId;
 
     if (metadata.contentType == null) metadata.contentType = fileUpload.contentType.value;
     if (metadata.filename == null) metadata.filename = fileUpload.filename;
@@ -27,68 +22,42 @@ class FileServices2 extends RethinkServices<FileDb> {
 
     metadata.id = resp['generated_keys'].first;
 
-    String fileId = resp['generated_keys'].first;
-    var file = new File('${path.current}/${Col.files}/$fileId');
-
-    await file.writeAsBytes(fileUpload.content);
 
     return metadata;
   }
 
-  Future<shelf.Response> getFile (String id) async {
-    var metadata = await getNow(id);
+  Future writeFile (String id, List<int> data) async {
+    var file = new File('${path.current}/${Col.files}/$fileId');
+    await file.writeAsBytes(data);
+  }
 
+  Stream<List<int>> readFile (String id) async * {
     var file = new File("${path.current}/${Col.files}/$id");
-    return new shelf.Response.ok(file.openRead(), headers: {"Content-Type": metadata.contentType});
+    yield * file.openRead();
+  }
+
+  shelf.Response downloadFile (String id) async {
+    var metadata = await getMetadata(id);
+    new shelf.Response.ok(readFile(id), headers: {"Content-Type": metadata.contentType});
   }
 
 
-
-
-
-  Future Get(String id) async {
-    GridOut gridOut = await fs.findOne(where.id(StringToId(id)));
-
+  Future<FileDb> getMetadata(String id) async {
+    var metadata = await getNow(id);
     if (gridOut == null) throw new app.ErrorResponse(
         400, "El archivo no existe");
-
-    return new shelf.Response.ok(getData(gridOut),
-        headers: {"Content-Type": gridOut.contentType});
+    return metadata;
   }
 
-  @app.Route('/:id/metadata', methods: const [app.GET])
-  //@Private()
-  @Encode()
-  Future<FileDb> GetMetadata(String id) async {
-    if (id == null) throw new app.ErrorResponse(
-        400, "No se pudo obtener metadata: id null");
-
-    GridOut gridOut = await fs.findOne(where.id(StringToId(id)));
-
-    if (gridOut == null) throw new app.ErrorResponse(
-        400, "El archivo no existe");
-
-    return mongoDb.decode(gridOut.metaData, FileDb);
+  Future<FileDb> updateMetadata (String id, FileDb delta) async {
+    Map resp = await updateNow(id, delta);
+    return getMetadata(id);
   }
 
-  @app.Route('/:id', methods: const [app.PUT], allowMultipartRequest: true)
-  //@Private()
-  @Encode()
-  Future<FileDb> Update(String id, @app.Body(app.FORM) Map form,
-      {String ownerId}) async {
-    FileDb metadata = await GetMetadata(id);
-    Ref obj = await Delete(id);
-    FileDb fileDb = await New(form, metadata, id: id, ownerId: ownerId);
 
-    return fileDb;
-  }
-
-  @app.Route('/:id', methods: const [app.DELETE])
-  //@Private()
-  @Encode()
-  Future<Ref> Delete(String id) async {
-    await deleteFile(id);
-
+  Future deleteFile(String id) async {
+    var file = new File("${path.current}/${Col.files}/$id");
+    await file.delete()
     return new Ref()..id = id;
   }
 
