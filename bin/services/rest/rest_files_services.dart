@@ -8,6 +8,8 @@ class RestFileServices extends FileServices2 {
   @app.DefaultRoute (methods: const[app.POST], allowMultipartRequest: true)
   @Encode()
   Future<FileDb> newFile(@app.Body(app.FORM) QueryMap form, @Decode(fromQueryParams: true) FileDb metadata) async {
-    getT
+    HttpBodyFileUpload fileUpload = extractFileUpload(form);
+
+    //TODO: Usar los metodos de la clase padre 'writeFile' y 'insertMetadata', antes de insertar metadata, asignarle el filename y el contentType desde la info de fileUpload
   }
 }

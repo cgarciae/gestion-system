@@ -22,7 +22,7 @@ set userId (String value) => app.request.headers.authorization = value;
 const int ADMIN = 1;
 
 
-HttpBodyFileUpload extractFile (Map form)
+HttpBodyFileUpload extractFileUpload (Map form)
 => form.values.where((value) => value is HttpBodyFileUpload).first;
 
 Future<Map> streamResponseToJSON (http.StreamedResponse resp)

@@ -20,6 +20,14 @@ class FileServices2 extends RethinkServices<FileDb> {
     new shelf.Response.ok(readFile(id), headers: {"Content-Type": metadata.contentType});
   }
 
+  Future<FileDb> insertMetadata (FileDb metadata) async {
+    var resp = await insertNow(metadata);
+
+    if (resp['inserted'] == 0)
+      throw app.ErrorResponse (400, {'error': 'Metadata no insertada'});
+
+    return metadata..id = resp['generated_keys'].first;
+  }
 
   Future<FileDb> getMetadata(String id) async {
     var metadata = await getNow(id);
