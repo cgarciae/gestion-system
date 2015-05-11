@@ -71,6 +71,7 @@ main() async {
   var dbManager = new RethinkDbManager.fromCongif(config);
 
   app.addPlugin(getMapperPlugin(dbManager));
+  app.addPlugin(mvc.mvcPluggin);
   //app.addPlugin(AuthenticationPlugin);
   //app.addPlugin(ErrorCatchPlugin);
   app.addPlugin(PrintHeadersPlugin);
