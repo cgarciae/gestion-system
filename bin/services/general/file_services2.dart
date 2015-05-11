@@ -6,7 +6,7 @@ class FileServices2 extends RethinkServices<FileDb> {
   FileServices2(InjectableRethinkConnection irc) : super.fromInjectableConnection (Col.files, irc);
 
   Future writeFile (String id, List<int> data) async {
-    var file = new File('${path.current}/${Col.files}/$fileId');
+    var file = new File('${path.current}/${Col.files}/$id');
     await file.writeAsBytes(data);
   }
 

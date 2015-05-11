@@ -9,9 +9,9 @@ class RestFileServices extends FileServices2 {
   @Encode()
   Future<FileDb> newFile(@app.Body(app.FORM) QueryMap form, @Decode(fromQueryParams: true) FileDb metadata) async {
     HttpBodyFileUpload fileUpload = extractFileUpload(form);
-    metadata.contentType = fileUpload.contentType;
+    metadata.contentType = fileUpload.contentType.value;
     metadata.filename = fileUpload.filename;
-    metadata.id = insertMetadata(metadata);
+    metadata = await insertMetadata(metadata);
     writeFile(metadata.id, fileUpload.content);
     return metadata;
     //TODO: Usar los metodos de la clase padre 'writeFile' y 'insertMetadata', antes de insertar metadata, asignarle el filename y el contentType desde la info de fileUpload
