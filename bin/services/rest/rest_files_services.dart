@@ -15,4 +15,16 @@ class RestFileServices extends FileServices2 {
     return metadata;
     //TODO: Usar los metodos de la clase padre 'writeFile' y 'insertMetadata', antes de insertar metadata, asignarle el filename y el contentType desde la info de fileUpload
   }
+
+  @mvc.DataController('/:id', methods: const [app.GET])
+  Future<shelf.Response> getFile(String id){
+    return super.downloadFile(id);
+  }
+
+  @mvc.DefaultDataController(methods: const [app.GET])
+  Future<List<FileDb>> getFiles() async{
+    return genericAll();
+  }
+
+
 }

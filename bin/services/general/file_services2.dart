@@ -1,9 +1,9 @@
 part of aristadart.server;
 
 @Injectable()
-class FileServices2 extends RethinkServices<FileDb> {
+class FileServices2 extends GenericRethinkServices<FileDb> {
 
-  FileServices2(InjectableRethinkConnection irc) : super.fromInjectableConnection (Col.files, irc);
+  FileServices2(InjectableRethinkConnection irc) : super (Col.files, irc);
 
   Future writeFile (String id, List<int> data) async {
     var file = new File('${path.current}/${Col.files}/$id');
