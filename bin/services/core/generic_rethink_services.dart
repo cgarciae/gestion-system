@@ -30,7 +30,6 @@ class GenericRethinkServices<T extends Ref> extends RethinkServices<T> {
     return new Ref()..id = id;
   }
 
-  Future<T> genericAll ([expr]) async {
     Cursor cursor = await filter(expr).run(conn);
     return decode(await cursor.toArray(), T);
   }
