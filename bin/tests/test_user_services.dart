@@ -55,8 +55,7 @@ userServicesTests ()
             googleServices
                 .when(callsTo('GetUser'))
                 .thenReturn(new Future.value(basicUser));
-            
-            
+
             //SETUP
             app.addModule (new Module()
                     ..bind(UserServives)
@@ -218,7 +217,7 @@ userServicesTests ()
         
         test ('Is Admin', () async
         {
-            ProtectedUser protectedUser = Cast (ProtectedUser, basicUser);
+            ProtectedUser protectedUser = cast (ProtectedUser, basicUser);
             protectedUser.admin = false;
             MongoDb db = await dbManager.getConnection();
             await db.insert (Col.usuarios, protectedUser);
