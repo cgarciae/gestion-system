@@ -5,8 +5,7 @@ class RestFileServices extends FileServices2 {
 
   RestFileServices(InjectableRethinkConnection irc): super (irc);
 
-  @app.DefaultRoute (methods: const[app.POST], allowMultipartRequest: true)
-  @Encode()
+  @mvc.DefaultDataController (methods: const[app.POST], allowMultipartRequest: true)
   Future<FileDb> newFile(@app.Body(app.FORM) QueryMap form, @Decode(fromQueryParams: true) FileDb metadata) async {
     HttpBodyFileUpload fileUpload = extractFileUpload(form);
     metadata.contentType = fileUpload.contentType.value;
