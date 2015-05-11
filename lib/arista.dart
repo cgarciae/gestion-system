@@ -129,7 +129,7 @@ abstract class IconDir {
 bool notNullOrEmpty(String s) => !(s == null || s == '');
 bool nullOrEmpty(String s) => !notNullOrEmpty(s);
 List flatten(List<List> list) => list.expand((x) => x).toList();
-dynamic Cast(Type type, Object obj) => decode(encode(obj), type);
+dynamic cast(Type type, Object obj) => decode(encode(obj), type);
 dynamic Clone(Object obj) => decode(encode(obj), obj.runtimeType);
 
 Function decodeTo(Type type) {

@@ -1,34 +1,29 @@
 part of aristadart.server;
 
-@app.Group('/${Col.home}')
-@Catch()
-@Encode()
-class HomeServices extends AristaService<Home>
+
+
+class HomeServices extends GenericRethinkServices<Home>
 {
-    HomeServices (MongoService mongoDb) : super (Col.home, mongoDb);
-    
-    @app.DefaultRoute (methods: const [app.GET])
-    @Private(ADMIN)
+    HomeServices (InjectableRethinkConnection irc) : super (Col.home, irc);
+
+
     Future<Home> Get () async
     {
-        var home = await findOne ();
+        var home = await findOne ({});
         
         if (home == null)
         {
             home = new Home()
-                ..id = newId()
                 ..slider = []
                 ..productosDestacado = [];
             
-            insert (home);
+            await insertNow (home);
         }
         
         return home;
     }
-    
-    @app.DefaultRoute (methods: const [app.PUT])
-    @Private(ADMIN)
-    Future<Home> Update (@Decode() Home delta) async
+
+    Future<Home> Update (Home delta) async
     {
         var home = await Get();
         
@@ -52,20 +47,35 @@ class HomeServices extends AristaService<Home>
         
         return Get();
     }
-    
-    
-    @app.Route ('/productoDestacado', methods: const [app.POST])
-    Future<BoolResp> agregarProductoDestacado (Producto producto)
-    {
+
+    Future<BoolResp> agregarProductoDestacado (Producto producto) {
       throw new UnimplementedError();
     }
-    
-    @app.Route ('/productoDestacado', methods: const [app.DELETE])
-    Future<BoolResp> eliminarProductoDestacado (Producto producto)
-    {
+
+    Future<BoolResp> eliminarProductoDestacado (Producto producto) {
       throw new UnimplementedError();
     }
 }
 
+@mvc.GroupController ('/${Col.home}', root: '/web/template')
+class MvcHomeServices extends HomeServices {
+    final NoticiaServices noticiaServices;
 
+    MvcHomeServices (this.noticiaServices, InjectableRethinkConnection irc): super (irc);
+
+    @mvc.DefaultDataController ()
+    index (@app.QueryParam() int n) async {
+        Home home = await genericGet("id");
+        HomeView homeView = cast(HomeView, home);
+
+        homeView.noticias = await noticiaServices.ultimas(n);
+
+        return homeView;
+    }
+}
+
+class HomeView extends Home {
+    @Field() List<Noticia> noticias;
+    @Field() List<Sitio> sitios;
+}
 

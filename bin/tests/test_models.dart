@@ -36,7 +36,7 @@ testModels ()
         tearDown((){});
         
         test("Encoding", (){
-            Noticia noticiaT = Cast (Noticia, noticia);
+            Noticia noticiaT = cast (Noticia, noticia);
             
             expect (noticia.titulo, noticiaT.titulo);
             expect (noticia.texto, noticiaT.texto);

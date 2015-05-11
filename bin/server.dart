@@ -27,7 +27,7 @@ import 'package:redstone/server.dart';
 //part 'services/core/arista_service.dart';
 //part 'services/general/user_services.dart';
 part 'services/general/noticia_services.dart';
-//part 'services/general/home_services.dart';
+part 'services/general/home_services.dart';
 //part 'services/general/sitio_services.dart';
 //part 'services/general/general_services.dart';
 //part 'services/general/file_services.dart';
@@ -81,8 +81,7 @@ main() async {
       ..bind(InjectableRethinkConnection)
       ..bind(FileServices2)
       ..bind(MvcFileServices)
-      ..bind(RestFileServices)
-      );
+      ..bind(RestFileServices));
     //..bind(UserServives)
     //..bind(GoogleServices)
     //..bind(FileServices));
