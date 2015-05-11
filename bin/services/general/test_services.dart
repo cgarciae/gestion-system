@@ -11,6 +11,17 @@ cookie ()
 @app.Route ('/testPATCH', methods: const['PATCH',app.POST])
 testPatch () => "OK";
 
+@mvc.DataController ('/testUltimas')
+testUlitmas (@Inject() InjectableRethinkConnection irc) async {
+  var noticiaServices = new NoticiaServices(irc);
+  await noticiaServices.newNoticia();
+  await noticiaServices.newNoticia();
+  await noticiaServices.newNoticia();
+  await noticiaServices.newNoticia();
+
+  return noticiaServices.ultimas(3);
+}
+
 class PrintHeaders
 {
     const PrintHeaders();

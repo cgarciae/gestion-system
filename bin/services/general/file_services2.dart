@@ -15,7 +15,7 @@ class FileServices2 extends RethinkServices<FileDb> {
     yield * file.openRead();
   }
 
-  shelf.Response downloadFile (String id) async {
+  Future<shelf.Response> downloadFile (String id) async {
     var metadata = await getMetadata(id);
     new shelf.Response.ok(readFile(id), headers: {"Content-Type": metadata.contentType});
   }

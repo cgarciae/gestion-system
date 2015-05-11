@@ -6,8 +6,7 @@ String encryptPassword(String pass) {
   return CryptoUtils.bytesToHex(toEncrypt.close());
 }
 
-QueryMap NewQueryMap () => new QueryMap(new Map());
-QueryMap MapToQueryMap (Map map) => new QueryMap(map);
+QueryMap queryMap ([Map map]) => new QueryMap(map != null? map: {});
 
 ObjectId StringToId (String id) => new ObjectId.fromHexString(id);
 String newId () => new ObjectId().toHexString();

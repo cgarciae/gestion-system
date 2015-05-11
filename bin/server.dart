@@ -1,8 +1,7 @@
 library aristadart.server;
 
-import 'package:GestionSystem/arista.dart';
-
 import 'dart:io';
+import 'package:GestionSystem/arista.dart';
 import 'package:path/path.dart' as path;
 import 'package:redstone/server.dart' as app;
 import 'package:redstone_mapper/plugin.dart';
@@ -27,7 +26,7 @@ import 'package:redstone/server.dart';
 
 //part 'services/core/arista_service.dart';
 //part 'services/general/user_services.dart';
-//part 'services/general/noticia_services.dart';
+part 'services/general/noticia_services.dart';
 //part 'services/general/home_services.dart';
 //part 'services/general/sitio_services.dart';
 //part 'services/general/general_services.dart';
@@ -38,6 +37,7 @@ part 'services/general/test_services.dart';
 part 'utils/utils.dart';
 part 'services/rest/rest_files_services.dart';
 part 'services/mvc/mvc_files_services.dart';
+part 'services/core/generic_rethink_services.dart';
 
 main() async {
 
@@ -51,7 +51,16 @@ main() async {
     host: dbHost,
     port: 7272,
     database: 'gstest',
-    tables: [Col.usuarios, Col.sitios, Col.noticias, Col.files, 'categorias', 'productos']
+    tables: [
+      new TableConfig (Col.usuarios),
+      new TableConfig (Col.sitios),
+      new TableConfig (Col.noticias,
+        secondaryIndexes: ['fechaAgregada']),
+      new TableConfig (Col.home),
+      new TableConfig (Col.files),
+      new TableConfig (Col.categorias),
+      new TableConfig (Col.productos)
+    ]
   );
 
   var r = new Rethinkdb();
@@ -67,6 +76,7 @@ main() async {
   app.addPlugin(PrintHeadersPlugin);
 
   app.addModule(new Module()
+      ..bind(NoticiaServices)
       ..bind(InjectableRethinkConnection)
       ..bind(FileServices2)
       ..bind(MvcFileServices)
@@ -149,9 +159,8 @@ handleResponseHeader() {
     app.chain.next(() => app.response.change(headers: _specialHeaders()));
   }
 }
-
+/*
 setupRethink(ConfigRethink config) async {
-
   Rethinkdb r = new Rethinkdb();
   Connection conn = await r.connect(host: config.host, db: config.database, port: config.port);
 
@@ -177,6 +186,7 @@ setupRethink(ConfigRethink config) async {
 
   conn.close();
 }
+*/
 
 _specialHeaders() {
   var cross = {"Access-Control-Allow-Origin": "*"};
@@ -187,4 +197,33 @@ _specialHeaders() {
   }
 
   return cross;
+}
+
+setupRethink(ConfigRethink config) async {
+  Rethinkdb r = new Rethinkdb();
+  Connection conn = await r.connect(host: config.host, db: config.database, port: config.port);
+
+  if (!await r.dbList().contains(config.database).run(conn)) {
+    await r.dbCreate(config.database).run(conn);
+    print('Created db: ${config.database}');
+  }
+
+  List tables = await r.db(config.database).tableList().run(conn);
+  for (var tableConfig in config.tables) {
+    if (!tables.contains(tableConfig.name)) {
+      await r.tableCreate(tableConfig.name).run(conn);
+      print('Created table: ${tableConfig.name}');
+    }
+
+    var table = r.table(tableConfig.name);
+    for (var index in tableConfig.secondaryIndexes) {
+      List<String> indexes = await table.indexList().run(conn);
+      if (! indexes.contains(index)) {
+        await table.indexCreate(index).run(conn);
+        print('Created index $index on table ${tableConfig.name}');
+      }
+    }
+  }
+
+  conn.close();
 }

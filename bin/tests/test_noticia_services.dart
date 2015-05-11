@@ -24,7 +24,7 @@ noticiaServicesTests ()
         
         test("New", () async
         {
-            Noticia respNoticia = await noticiaServices.New();
+            Noticia respNoticia = await noticiaServices.newNoticia();
              
             expect (respNoticia.titulo != null, true);
             expect (respNoticia.texto != null, true);
@@ -32,9 +32,9 @@ noticiaServicesTests ()
         
         test("Get", () async
         {
-            Noticia noticia = await noticiaServices.New();
+            Noticia noticia = await noticiaServices.newNoticia();
             
-            Noticia respNoticia = await noticiaServices.Get (noticia.id);
+            Noticia respNoticia = await noticiaServices.get (noticia.id);
              
             expect (encode(noticia), encode(respNoticia));
         });
@@ -42,14 +42,14 @@ noticiaServicesTests ()
         test("Update", () async
         {
             //Creat noticia
-            Noticia noticia = await noticiaServices.New();
+            Noticia noticia = await noticiaServices.newNoticia();
             
             //Update
             var cambio = "AAA";
             var delta = new Noticia()
                 ..texto = cambio;
             
-            Noticia noticiaActualizada = await noticiaServices.Update (noticia.id, delta);
+            Noticia noticiaActualizada = await noticiaServices.update (noticia.id, delta);
              
             //Actualizar noticia original
             noticia.texto = cambio;
@@ -61,10 +61,10 @@ noticiaServicesTests ()
         test("Delete", () async
         {
             //Creat noticia
-            Noticia noticia = await noticiaServices.New();
+            Noticia noticia = await noticiaServices.newNoticia();
             
             //Delete
-            Ref ref = await noticiaServices.Delete (noticia.id);
+            Ref ref = await noticiaServices.deleteNoticia (noticia.id);
              
             //Validar id
             expect(ref.id, noticia.id);
@@ -81,19 +81,19 @@ noticiaServicesTests ()
             (
                 new Iterable
                     .generate(10)
-                    .map((n) => noticiaServices.New())
+                    .map((n) => noticiaServices.newNoticia())
             );
             
-            List<Noticia> ultimas5 = await noticiaServices.Ultimas(5);
+            List<Noticia> ultimas5 = await noticiaServices.ultimas(5);
             
             //Validar que todas las ultimas noticias sean noticias originales
             expect (ultimas5.every((ultima) => noticias.any((noticia) => noticia.id == ultima.id)), true);
             
             //Eliminar una noticia de las ultimas
-            Ref borrada = await noticiaServices.Delete (ultimas5.first.id);
+            Ref borrada = await noticiaServices.deleteNoticia (ultimas5.first.id);
             
             //Validar noticia borrada
-            ultimas5 = await noticiaServices.Ultimas(5);
+            ultimas5 = await noticiaServices.ultimas(5);
             expect (ultimas5.any((noticia) => noticia.id == borrada.id), false);
             var todas = await noticiaServices.find();
             expect (todas.length, 9);
@@ -102,10 +102,10 @@ noticiaServicesTests ()
             var vieja = ultimas5.last;
             
             //Agregar nueva noticia
-            var nueva = await noticiaServices.New();
+            var nueva = await noticiaServices.newNoticia();
             
             //Validar noticia vieja no sea ultima noticia
-            ultimas5 = await noticiaServices.Ultimas(5);
+            ultimas5 = await noticiaServices.ultimas(5);
             expect (ultimas5.any((noticia) => noticia.id == vieja.id), false);
             expect (ultimas5.first.id == nueva.id, true);
         });
