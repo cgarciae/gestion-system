@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Servicios</title>
+
+
+    <link href="template/css/bootstrap.min.css" rel="stylesheet">
+    <link href="template/css/font-awesome.min.css" rel="stylesheet">
+    <link href="template/css/iconmoon.css" rel="stylesheet">
+    <link href="template/css/animate.min.css" rel="stylesheet">
+    <link href="template/css/prettyPhoto.css" rel="stylesheet">>
+    <link href="template/css/main.css" rel="stylesheet">
+    <link href="template/css/responsive.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+<section id="portfolio">
+    <div class="container">
+        <div class="center">
+            <h2>Portfolio</h2>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+        </div>
+
+
+        <ul class="portfolio-filter text-center">
+            <li><a class="btn btn-default active" href="#" data-filter="*">All Works</a></li>
+            <li><a class="btn btn-default" href="#" data-filter=".bootstrap">Creative</a></li>
+            <li><a class="btn btn-default" href="#" data-filter=".html">Photography</a></li>
+            <li><a class="btn btn-default" href="#" data-filter=".wordpress">Web Development</a></li>
+        </ul><!--/#portfolio-filter-->
+
+        <div class="row">
+            <div class="portfolio-items">
+
+                {{#.}}
+
+                    <div class="portfolio-item bootstrap col-xs-12 col-sm-4 col-md-3">
+                    <div class="recent-work-wrap">
+                        <img class="img-responsive" src="{{href}}" alt="">
+                        <div class="overlay">
+                            <div class="recent-work-inner">
+                                <h3><a href="#">Nombre del archivo: {{filename}}</a></h3>
+                                <p>Content Type: {{contentType}}</p>
+                                <a class="preview" href="{{href}}" rel="prettyPhoto"><i class="fa fa-eye"></i> View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                {{/.}}
+
+            </div>
+        </div>
+    </div>
+</section><!--/#portfolio-item-->
+
+
+
+<script src="template/js/jquery.js"></script>
+<script src="template/js/bootstrap.min.js"></script>
+<script src="template/js/jquery.prettyPhoto.js"></script>
+<script src="template/js/jquery.isotope.min.js"></script>
+<script src="template/js/main.js"></script>
+<script src="template/js/wow.min.js"></script>
+<script src="template/js/holder.min.js"></script>
+
+</body>
+</html>

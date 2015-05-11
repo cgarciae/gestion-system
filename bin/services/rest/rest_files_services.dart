@@ -21,10 +21,4 @@ class RestFileServices extends FileServices2 {
     return super.downloadFile(id);
   }
 
-  @mvc.DefaultDataController(methods: const [app.GET])
-  Future<List<FileDb>> getFiles() async{
-    return genericAll();
-  }
-
-
 }
