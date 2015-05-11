@@ -22,6 +22,11 @@ testUlitmas (@Inject() InjectableRethinkConnection irc) async {
   return noticiaServices.ultimas(3);
 }
 
+@mvc.DataController('/testGenericAll')
+testGenericAll (@Inject() RestFileServices restFileServices) {
+  return restFileServices.genericAll();
+}
+
 class PrintHeaders
 {
     const PrintHeaders();
