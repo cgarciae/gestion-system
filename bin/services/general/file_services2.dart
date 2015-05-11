@@ -31,7 +31,7 @@ class FileServices2 extends RethinkServices<FileDb> {
 
   Future<FileDb> getMetadata(String id) async {
     var metadata = await getNow(id);
-    if (gridOut == null) throw new app.ErrorResponse(
+    if (metadata == null) throw new app.ErrorResponse(
         400, "El archivo no existe");
     return metadata;
   }
